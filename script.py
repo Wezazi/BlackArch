@@ -13,9 +13,7 @@ lines = output.splitlines()
 
 
 for line in lines:
-    #print(lines)
     if "are in conflict" in line: #':: <x> and <y> are in conflict'
-        #print(line)
         refined = line.replace("::", "")
         refined = refined.replace("are in conflict", "")
         refined = refined.strip()
@@ -26,4 +24,13 @@ for line in lines:
         
 print(conflicts)
 
-#for conflict in conflict:
+joined = " ".joined(conflicts)
+
+remove = subprocess.run(
+    ["sudo", "pacman", "-R", joined],
+    capture_output = True,
+    text = True
+)
+
+output = remove.stdout
+errors = remove.stderr
