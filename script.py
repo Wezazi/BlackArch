@@ -6,11 +6,24 @@ result = subprocess.run(
     text = True
 )
 
+
 output = result.stdout
-print(output)
-
-#the problem with the previos version was that i coudln't output it to the terminal AND use the output in my script
-#Just adding Text= True solved the previous problem that i had with capture_output=True
+errors = result.stderr
+lines = output.splitlines()
 
 
+for line in lines:
+    #print(lines)
+    if "are in conflict" in line: #':: <x> and <y> are in conflict'
+        #print(line)
+        refined = line.replace("::", "")
+        refined = refined.replace("are in conflict", "")
+        refined = refined.strip()
+        conflicts = refined.split(" and ")
+    else:
+        continue
+        
+        
+print(conflicts)
 
+#for conflict in conflict:
