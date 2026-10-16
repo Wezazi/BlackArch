@@ -1,8 +1,16 @@
 import subprocess 
 
 result = subprocess.run(
-    ["sudo", "pacman", "-Syu", "--noconfirm"]
+    ["sudo", "pacman", "-Syu", "--noconfirm"],
+    capture_output = True,
+    text = True
 )
 
-#The script output was messier than when i manually typed the command and I'm not good with editing output layout so i removed capture_output=True and the print. 
-#The script now returns the original terminal output, as if you typed the command manually
+output = result.stdout
+print(output)
+
+#the problem with the previos version was that i coudln't output it to the terminal AND use the output in my script
+#Just adding Text= True solved the previous problem that i had with capture_output=True
+
+
+
