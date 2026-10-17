@@ -28,12 +28,13 @@ while True:
             refined = refined.strip()
             problems = refined.split(" and ")
             for problem in problems:
-                conflicts.append(problem)
+                conflicts.add(problem)
         else:
             continue
             
             
     while True:  
+        print(conflicts)
         def removeFunction(conflicts):
             return subprocess.run(
                 ["sudo", "pacman", "-R", "--noconfirm", *conflicts], # The asterisk in *conflicts outputs each item in the list as a seperate package in the command. My earlier script did joined = " ".join(conflicts) and then i set joined inside ["sudo", "pacman", "-R", joined] but this is wrong because joined got interpreted as a single package name
@@ -58,7 +59,7 @@ while True:
                 if problem in conflicts:
                     continue
                 else:
-                    conflicts.append(problem)
+                    conflicts.add(problem)
             else:
                 continue
             
@@ -73,7 +74,8 @@ while True:
             removeFunction(conflicts)
         
         
-
+#To make tab in nano be 4 spaces like vscode: 
+#sudo nano ~/.nanorc (/root/.nanorc). Type set tabsize 4 and set tabstospaces
         
 
 
