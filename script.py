@@ -13,16 +13,18 @@ while True:
     lines = output.splitlines()
 
 
-    conflicts = []
+    #changed to set instead of list to make sure each value is unique
+    conflicts = set() #this confused me because initially i did conficts = {} which gave me an error: "dict object has no add attribute. So it created a dictionary instead of a set which is why i got that error. When declaring sets you need to use set() but if you are declaring and defining you can type it like this: conflicts = {<value1>, <value2>, etc} because then it can see whether it's a set or dict based on if the curly brackets contains values or key:value pairs
     
     if "are in conflict" not in output:
         break
 
 
     for line in lines:
-        if "are in conflict" in line: #':: <x> and <y> are in conflict'
+        if "are in conflict" in line:
             refined = line.replace("::", "")
-            refined = refined.replace("are in conflict", "")
+            refined = refined.split(" are in conflict")
+            refined = refined[0]
             refined = refined.strip()
             problems = refined.split(" and ")
             for problem in problems:
@@ -31,32 +33,34 @@ while True:
             continue
             
             
-    def removeFunction(conflicts):
-        return subprocess.run(
-            ["sudo", "pacman", "-R", "--noconfirm", *conflicts], # The asterisk in *conflicts outputs each item in the list as a seperate package in the command. My earlier script did joined = " ".join(conflicts) and then i set joined inside ["sudo", "pacman", "-R", joined] but this is wrong because joined got interpreted as a single package name
-            capture_output = True,
-            text = True
-        )
+    while True:  
+        def removeFunction(conflicts):
+            return subprocess.run(
+                ["sudo", "pacman", "-R", "--noconfirm", *conflicts], # The asterisk in *conflicts outputs each item in the list as a seperate package in the command. My earlier script did joined = " ".join(conflicts) and then i set joined inside ["sudo", "pacman", "-R", joined] but this is wrong because joined got interpreted as a single package name
+                capture_output = True,
+                text = True
+            )
+            
+            
+        remove = removeFunction(conflicts)
+        output = remove.stdout
+        errors = remove.stderr
+
+        if "required by" not in output:
+                break
+            
+        lines = output.splitlines()
         
-        
-    remove = removeFunction(conflicts)
-    output = remove.stdout
-    errors = remove.stderr
-
-
-    lines = output.splitlines()
-
-    for line in lines:
-        if "required by" in line:
-            refined = line.split("required by ")
-            problem = refined[1]
-            if problem in conflicts:
-                continue
+        for line in lines:
+            if "required by" in line:
+                refined = line.split("required by ")
+                problem = refined[1]
+                if problem in conflicts:
+                    continue
+                else:
+                    conflicts.append(problem)
             else:
-                conflicts.append(problem)
-                removeFunction(conflicts)
-        else:
-            continue
+                continue
             
             
     #Don't underestimate how big of a difference this does:
