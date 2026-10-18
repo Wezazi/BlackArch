@@ -1,0 +1,40 @@
+press e and go all the way to right press space and type ibt=off and enter
+
+sudo nano /etc/pacman.conf
+remove the community section
+https://archlinux.org/news/cleaning-up-old-repositories/
+https://archlinux.org/news/incoming-changes-in-jdk-jre-21-packages-may-require-manual-intervention/
+
+
+blackarch-install
+
+make boot partition (type = UFI, size 500M), swap partition (type=linux swap size 512M), and root partition (keep default type and just press enter on size)
+
+lsblk -p
+
+mount your boot drive and add ibt=off to systemd-boot (yes, not grub) configuration file otherwise your vm won't boot once you restart
+
+sudo mount /dev/sda1 /mnt
+sudo nano /mnt/loader/entries/arch.conf
+go to rw and press space and type ibt=off
+
+sudo umount /mnt
+sudo reboot
+
+sudo dhcpcd
+
+sudo pacman-key --init
+sudo pacman-key --populate archlinux blackarch
+sudo pacman-key --refresh-keys
+
+just to see if the mirror is working before we run the script:
+sudo pacman -Syu --noconfirm
+
+if the mirror is not working: sudo nano /etc/pacman.d/blackarch-mirrorlist and comment out the current mirror and uncomment another mirror
+
+git clone https://github.com/Wezazi/BlackArch.git
+cd BlackArch
+python script.py
+
+Everything works but i just realized that sudo pacman -Syu --noconfirm doesn't install the packages that aren't installed, it just upgrades the current ones so all packages that we removed by running the script are gone. You can confirm by trying to run metasploit which was removed during my script execution, it returns "msfconsole: command not found".
+
