@@ -63,15 +63,16 @@ while True:
             else:
                 continue
             
+        #removeFunction(conflicts)
+        
+        #Don't underestimate how big of a difference this does:
+        lines = errors.splitlines()
+        for line in lines:
+            if "target not found:" in line:
+                refined = line.split("target not found: ")
+                unFound = refined[1]
+                conflicts.remove(unFound)
             
-    #Don't underestimate how big of a difference this does:
-    eLines = errors.splitlines()
-    for line in eLines:
-        if "target not found:" in line:
-            refined = line.split("target not found: ")
-            unFound = refined[1]
-            conflicts.remove(unFound)
-            removeFunction(conflicts)
         
         
 #To make tab in nano be 4 spaces like vscode: 
