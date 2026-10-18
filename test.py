@@ -45,7 +45,7 @@ while True:
         for line in lines:
             if "exists in filesystem" in line and "owned by" in line:
                 refined = line.replace(")", "")
-                refined = line.split("owned by ")
+                refined = refined.split("owned by ")
                 refined = refined[1]
                 problem = refined.strip()
                 conflicts.add(problem)
