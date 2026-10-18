@@ -40,6 +40,39 @@ while True:
                 refined = refined[1]
                 problem = refined.strip()
                 conflicts.add(problem)
+                
+    elif "exists in filesystem" in output:
+        for line in lines:
+            if "exists in filesystem" in line and "owned by" in line:
+                refined = line.replace(")", "")
+                refined = refined.split("owned by ")
+                refined = refined[1]
+                problem = refined.strip()
+                conflicts.add(problem)
+                
+            elif "exists in filesystem" in line:
+                refined = line.split(" exists in filesystem")
+                refined = refined[0]
+                refined = refined.rsplit("/", 1)
+                refined = refined[1]
+                problem = refined.strip()
+                conflicts.add(problem)
+                
+            else:
+                continue
+            
+    elif "exists in both" in output:
+        for line in lines:
+            if "exists in both" in line:
+                refined = line.split("exists in both ")
+                refined = refined [1]
+                refined = refined.strip()
+                refined = refined.replace("'", "")
+                problems = refined.split(" and ")
+                for problem in problems:
+                    conflicts.add(problem)
+                                
+
     else:
         break
                 
@@ -90,6 +123,3 @@ while True:
 #To make tab in nano be 4 spaces like vscode: 
 #sudo nano ~/.nanorc (/root/.nanorc). Type set tabsize 4 and set tabstospaces
         
-
-
-
