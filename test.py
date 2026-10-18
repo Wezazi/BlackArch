@@ -44,7 +44,9 @@ while True:
     elif "exists in filesystem" in output:
         for line in lines:
             if "exists in filesystem" in line and "owned by" in line:
-                refined = line.replace(")", "")
+                #.replace() doesn't seem to work for some unknown reason so i changed i'm gonna tru .split() instead
+                refined = line.split(")")
+                refined = refined[0]
                 refined = line.split("owned by ")
                 refined = refined[1]
                 problem = refined.strip()
@@ -55,7 +57,7 @@ while True:
                 refined = refined[0]
                 refined = refined.rsplit("/", 1)
                 refined = refined[1]
-                problem = refined.strip
+                problem = refined.strip()
                 conflicts.add(problem)
                 
             else:
