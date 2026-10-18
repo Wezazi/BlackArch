@@ -46,12 +46,6 @@ while True:
         remove = removeFunction(conflicts)
         output = remove.stdout
         errors = remove.stderr
-        #print("a")
-
-        #if "required by" not in output and "target not found:" not in errors:
-                #break
-            
-        #print("b")
         
         if "required by" in output:
             lines = output.splitlines()
