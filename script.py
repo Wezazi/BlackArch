@@ -46,32 +46,39 @@ while True:
         remove = removeFunction(conflicts)
         output = remove.stdout
         errors = remove.stderr
+        #print("a")
 
-        if "required by" not in output:
-                break
+        #if "required by" not in output and "target not found:" not in errors:
+                #break
             
-        lines = output.splitlines()
+        #print("b")
         
-        for line in lines:
-            if "required by" in line:
-                refined = line.split("required by ")
-                problem = refined[1]
-                if problem in conflicts:
-                    continue
+        if "required by" in output:
+            lines = output.splitlines()
+            for line in lines:
+                if "required by" in line:
+                    refined = line.split("required by ")
+                    problem = refined[1]
+                    if problem in conflicts:
+                        continue
+                    else:
+                        conflicts.add(problem)
                 else:
-                    conflicts.add(problem)
-            else:
-                continue
-            
-        #removeFunction(conflicts)
-        
+                    continue
+                
         #Don't underestimate how big of a difference this does:
-        lines = errors.splitlines()
-        for line in lines:
-            if "target not found:" in line:
-                refined = line.split("target not found: ")
-                unFound = refined[1]
-                conflicts.remove(unFound)
+        elif "target not found:" in errors:
+            lines = errors.splitlines()
+            for line in lines:
+                if "target not found:" in line:
+                    refined = line.split("target not found: ")
+                    unFound = refined[1]
+                    conflicts.remove(unFound)
+                else:
+                    continue
+        
+        else:
+            break
             
         
         
