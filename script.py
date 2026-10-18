@@ -16,22 +16,30 @@ while True:
     #changed to set instead of list to make sure each value is unique
     conflicts = set() #this confused me because initially i did conficts = {} which gave me an error: "dict object has no add attribute. So it created a dictionary instead of a set which is why i got that error. When declaring sets you need to use set() but if you are declaring and defining you can type it like this: conflicts = {<value1>, <value2>, etc} because then it can see whether it's a set or dict based on if the curly brackets contains values or key:value pairs
     
-    if "are in conflict" not in output:
-        break
+    if "are in conflict" in output:
 
-
-    for line in lines:
-        if "are in conflict" in line:
-            refined = line.replace("::", "")
-            refined = refined.split(" are in conflict")
-            refined = refined[0]
-            refined = refined.strip()
-            problems = refined.split(" and ")
-            for problem in problems:
+        for line in lines:
+            if "are in conflict" in line:
+                refined = line.replace("::", "")
+                refined = refined.split(" are in conflict")
+                refined = refined[0]
+                refined = refined.strip()
+                problems = refined.split(" and ")
+                for problem in problems:
+                    conflicts.add(problem)
+            else:
+                continue
+    elif "breaks dependency" in output:
+        for line in lines:
+            if "breaks dependency '" in line:
+                refined = line.split("' required by ")
+                refined = refined[1]
+                problem = refined.strip()
                 conflicts.add(problem)
-        else:
-            continue
-            
+    else:
+        break
+                
+    print(output)
             
     while True:  
         print(conflicts)
