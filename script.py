@@ -11,10 +11,14 @@ while True:
     output = result.stdout
     errors = result.stderr
     lines = output.splitlines()
+    for line in lines:
+        print(line)
 
 
     #changed to set instead of list to make sure each value is unique
     conflicts = set() #this confused me because initially i did conficts = {} which gave me an error: "dict object has no add attribute. So it created a dictionary instead of a set which is why i got that error. When declaring sets you need to use set() but if you are declaring and defining you can type it like this: conflicts = {<value1>, <value2>, etc} because then it can see whether it's a set or dict based on if the curly brackets contains values or key:value pairs
+    
+    
     
     if "are in conflict" in output:
 
@@ -39,7 +43,6 @@ while True:
     else:
         break
                 
-    print(output)
             
     while True:  
         print(conflicts)
