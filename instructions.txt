@@ -6,6 +6,8 @@ https://archlinux.org/news/cleaning-up-old-repositories/
 https://archlinux.org/news/incoming-changes-in-jdk-jre-21-packages-may-require-manual-intervention/
 
 
+sudo dhcpcd
+
 blackarch-install
 
 make boot partition (type = UFI, size 500M), swap partition (type=linux swap size 512M), and root partition (keep default type and just press enter on size)
